@@ -40,9 +40,8 @@ public class CustomerController {
 
     private final ClientService client;
 
-    // Cache temporaire pour stocker les comptes multisig en attente d'activation
+    // Temporary cache to store multisig accounts pending activation
     private static final Map<String, xrplAccount> pendingMultisigAccounts = new ConcurrentHashMap<>();
-
 
     @Autowired
     public CustomerController(ClientService client, @Value("${PLATFORM_XRPL_PK}") String platformPk) {
@@ -53,18 +52,18 @@ public class CustomerController {
     @PostMapping("/generateMultisigAddress")
     public ResponseEntity<Map<String, String>> generateMultisigAddress() {
         try {
-            // Créer un compte multisig
+            // Create a multisig account
             xrplAccount customerMultisigAccount = MultisigMgmt.createMultisigAccount();
             String multisigAddress = customerMultisigAccount.getrAddress().toString();
 
             pendingMultisigAccounts.put(multisigAddress, customerMultisigAccount);
 
-            // Retourner l'adresse au frontend
+            // Return the address to the frontend
             Map<String, String> response = new HashMap<>();
             response.put("multisigAddress", multisigAddress);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            // remove the multisig address and customerMultisigAccount from pendingMultisigAccounts
+            // Remove the multisig address and customerMultisigAccount from pendingMultisigAccounts
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -76,7 +75,7 @@ public class CustomerController {
             return transactionsResult.transactions().stream()
                     .anyMatch(txResult -> {
                         Transaction tx = txResult.resultTransaction().transaction();
-                        // Vérifiez que le paiement est de 5 XRP et provient du testateur
+                        // Verify that the payment is 5 XRP and comes from the testator
                         return tx instanceof Payment &&
                                 ((Payment) tx).amount().equals(XrpCurrencyAmount.ofDrops(5000000)) &&
                                 tx.account().equals(Address.of(testatorAddress));
@@ -86,7 +85,6 @@ public class CustomerController {
             return false;
         }
     }
-
 
     @PostMapping("/verifyServiceFee")
     public ResponseEntity<Boolean> verifyServiceFee(@RequestBody Map<String, String> request) {
@@ -139,7 +137,7 @@ public class CustomerController {
 
                 String memoContent = "inheritance:" + testatorAddress + ":" + multisigAddress;
                 MemoWrapper multisigMemo = createInheritancePaymentMemo(memoContent);
-                // send 1 xrp with memo containing kind of mapping testator:multisigaddress to multisig account
+                // Send 1 XRP with memo containing kind of mapping testator:multisigaddress to multisig account
                 ClientService.sendPayment(platformAccount, Address.of(multisigAddress),
                         XrpCurrencyAmount.ofXrp(new BigDecimal("1")), multisigMemo);
 
@@ -189,6 +187,4 @@ public class CustomerController {
         }
         return response;
     }
-
-
 }
