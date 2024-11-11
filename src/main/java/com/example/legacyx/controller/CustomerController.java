@@ -64,6 +64,7 @@ public class CustomerController {
             response.put("multisigAddress", multisigAddress);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            // remove the multisig address and customerMultisigAccount from pendingMultisigAccounts
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
