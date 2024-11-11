@@ -15,7 +15,8 @@ Proof of Concept by [Stan Stelcher](https://www.linkedin.com/in/stan-stelcher/)
    Once the service fee is confirmed, the platform generates a multisig account for the inheritance, where the testator, inheritor and platform accounts are configured as signers with specific weights. The testator funds the account with 20 XRP (arbitrary for demo purposes).
 
 3. **Inheritance Contract Activation**  
-   After multisig creation, the inheritance contract is activated. The platform sets up the multisig rules and the testator is free to fund the account during his lifetime.
+   After multisig creation, the inheritance contract is activated. The platform account will send 1 XRP from the 5 received as service fees to the multisig wallet and put memo data in the transaction and inheritance type (testatorAddress:multisigAddress) to help later with mapping. 
+The platform then sets up the multisig rules and the testator is free to fund the account during his lifetime.
 
 4. **Death Certificate Verification**  
    When the testator passes away, the government can issue a death certificate as a SD-JWT Verifiable Credential (VC) containing the DID of the deceased (An exemple function is provided on the platform where the government issues you, the inheritor, a signed VC using their JWK private key containing the testator DID as a death certificate). This certificate is verified using the government JWK public key and checking the fields before any transfer is initiated.
