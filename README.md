@@ -19,7 +19,7 @@ Proof of Concept by [Stan Stelcher](https://www.linkedin.com/in/stan-stelcher/)
 The platform then sets up the multisig rules and the testator is free to fund the account during his lifetime.
 
 4. **Death Certificate Verification**  
-   When the testator passes away, the government can issue a death certificate as a SD-JWT Verifiable Credential (VC) containing the DID of the deceased (An exemple function is provided on the platform where the government issues you, the inheritor, a signed VC using their JWK private key containing the testator DID as a death certificate). This certificate is verified using the government JWK public key and checking the fields before any transfer is initiated.
+   When the testator passes away, the government can issue a death certificate as a SD-JWT Verifiable Credential (VC) containing the DID of the deceased (An exemple function as this is supposed to be issued from a government entity, is provided on the platform where the government issues you, the inheritor, a signed VC using their JWK private key containing the testator DID as a death certificate). This certificate is verified using the government JWK public key and checking the fields before any transfer is initiated.
 
 5. **Fund Transfer to Inheritor**  
    Upon successful verification of the death certificate, the platform prepares the transfer of the multisig account balance to the inheritor’s address.
